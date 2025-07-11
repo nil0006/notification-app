@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dim">
+  <!-- Use "dark" for dark mode -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup | Notification App</title>
+    <link href="/css/output.css" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen flex items-center justify-center bg-base-200">
+    <div class="card w-full max-w-sm shadow-2xl bg-base-100">
+      <div class="card-body">
+        <h2 class="text-2xl font-bold text-center">Create an Account 👤</h2>
+        <p class="text-sm text-center text-base-content/60 mb-4">
+          Join as manager or user
+        </p>
+
+        <form method="POST" action="/signup" class="space-y-4">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Name</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="John Doe"
+              class="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="email@example.com"
+              class="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Create a strong password"
+              class="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Role</span>
+            </label>
+            <select name="role" class="select select-bordered w-full" required>
+              <option disabled selected>Select your role</option>
+              <option value="User">User</option>
+              <option value="Manager">Manager</option>
+            </select>
+          </div>
+
+          <div class="form-control mt-6">
+            <button class="btn btn-primary w-full">Sign Up</button>
+          </div>
+        </form>
+
+        <div class="divider">OR</div>
+        <p class="text-sm text-center">
+          Already have an account?
+          <a href="/login" class="link link-primary">Login here</a>
+        </p>
+      </div>
+    </div>
+    <!-- Toast container -->
+    <div id="toast-container" class="toast toast-top toast-end fixed z-50">
+      <% if (error) { %>
+      <div
+        class="alert alert-error text-black shadow-lg animate-slide-in"
+        id="error-toast"
+      >
+        <span><%= error %></span>
+      </div>
+      <% } %>
+    </div>
+  </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const toast = document.getElementById("error-toast");
+      if (toast) {
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 3000); // 3 seconds
+      }
+    });
+  </script>
+</html>
