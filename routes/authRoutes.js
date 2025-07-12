@@ -4,7 +4,7 @@ const authController = require('../controllers/authController');
 const redirectIfAuth = require('../middleware/redirectIfAuth');
 
 // Redirect to dashboard or login based on auth status
-router.get('/',authController.homeRedirect);
+router.get('/',redirectIfAuth);
 
 // Show signup page (only if not already logged in)
 router.get('/signup',redirectIfAuth , authController.getSignup);

@@ -3,21 +3,6 @@ const User = require("../models/User");
 const { createSession } = require("../utility/auth");
 
 
-exports.homeRedirect = (req, res) => {
-  const token = req.cookies.token;
-
-  if (!token) return res.redirect("/login");
-
-  try {
-    jwt.verify(token, process.env.JWT_SECRET);
-    res.redirect("/dashboard");
-  } catch (err) {
-    res.clearCookie("token");
-    res.redirect("/login");
-  }
-};
-
-
 // Render the signup form
 exports.getSignup = (req, res) => {
   res.render("signup", { error: null });
@@ -90,7 +75,6 @@ exports.postLogin = async (req, res) => {
     // Login successful → Set cookie
     createSession(res, user);
     res.redirect("/dashboard");
-
   } catch (err) {
     console.error("Login error:", err.message);
     res.status(500).render("login", {
