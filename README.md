@@ -13,7 +13,6 @@ A slick, real-time, role-based notification dashboard built with **Node.js**, **
 ## ✨ Features
 
 * 👥 **Role-based Access**
-
   * `Manager`: Can send notifications.
   * `User`: Can view notifications.
 
@@ -104,6 +103,20 @@ Emails are not sent immediately. Instead, high-priority notifications for offlin
 
 ---
 
+## 🧪 Unit Test Cases for the Project
+
+📄 You can review the manual unit test cases in this file:  
+[Unit Test Cases - Excel File](https://docs.google.com/spreadsheets/d/1iKVQOHg_sXrotyV3-Arxw8yY5wVC3h_oMInKf0eS8W8/edit?usp=sharing)
+
+It includes:
+
+- Auth module tests
+- Notification module tests
+- Email simulation
+- Role and token protection
+
+---
+
 ## 🚩 Security Notes
 
 * Cookies are set to expire in 2 hours
@@ -113,7 +126,7 @@ Emails are not sent immediately. Instead, high-priority notifications for offlin
 
 ## 👋 Author
 
-Made by [Niladri Karmakar](https://github.com/nil0006) 
+Made by [Niladri Karmakar](https://github.com/nil0006)
 
 ---
 
