@@ -1,57 +1,61 @@
-# 📬 Notification App
+# Notification App
 
-A slick, real-time, role-based notification dashboard built with **Node.js**, **Express**, **MongoDB**, and **EJS** — styled using **Tailwind CSS** and **DaisyUI**. Designed for teams that need quick alerts and clean UX. 🧠💥
-
----
-
-## 🔗 Live Demo
-
-🌐 Hosted on [Render](https://notification-app-khbv.onrender.com)
+A robust, real-time, role-based notification dashboard built with **Node.js**, **Express**, **MongoDB**, and **EJS**, styled using **Tailwind CSS** and **DaisyUI**. Designed for teams that need quick alerts and a clean, responsive UI.
 
 ---
 
-## ✨ Features
+## Live Demo
 
-* 👥 **Role-based Access**
-  * `Manager`: Can send notifications.
-  * `User`: Can view notifications.
+[Live Application (Hosted on Render)](https://notification-app-khbv.onrender.com)
 
-* 🔔 **Real-time Notifications**
-  Uses **Socket.IO** to push updates to online users instantly.
-
-* 📩 **Offline Email Alerts**
-  If a user is offline and the notification is marked as **High Priority**, they'll get an **automated email**.
-
-* 🔡️ **Secure Auth**
-  Authenticated using **JWT** with 2-hour expiration stored in **HTTP-only cookies**.
-
-* 🧠 **Cron-Driven Email Job**
-  Queued emails are sent via a background job every minute with automatic TTL cleanup.
-
-* 💅 **Clean UI**
-  Built with Tailwind CSS + DaisyUI for that modern, responsive, and polished dashboard look.
+> **Note:** The app is hosted on Render’s free tier. If you encounter a “502 Bad Gateway” error, it’s likely due to server inactivity. Please wait a few seconds and refresh the page — the server will resume automatically.
 
 ---
 
-## 🧰 Tech Stack
+## Features
 
-| Technology    | Usage                            |
-| ------------- | -------------------------------- |
-| Node.js       | Backend runtime                  |
-| Express.js    | Web framework                    |
-| MongoDB       | Database                         |
-| Mongoose      | MongoDB ODM                      |
-| EJS           | Templating engine                |
-| Tailwind CSS  | Utility-first CSS styling        |
-| DaisyUI       | UI components on top of Tailwind |
-| Socket.IO     | Real-time communication          |
-| JWT + Cookies | Auth sessions                    |
-| Nodemailer    | Email delivery                   |
-| node-cron     | Background job for email queue   |
+- **Role-Based Access Control**
+  - **Manager:** Authorized to send notifications
+  - **User:** Receives and views notifications
+
+- **Real-Time Notifications**
+  - Uses **Socket.IO** to instantly deliver updates to online users
+
+- **Offline Email Alerts**
+  - Sends email alerts to offline users when a high-priority notification is generated
+
+- **Secure Authentication**
+  - JWT-based authentication using HTTP-only cookies with 2-hour expiration
+
+- **Background Email Scheduler**
+  - Cron job sends pending emails every minute and automatically cleans up using TTL
+
+- **Modern UI**
+  - Built with Tailwind CSS and DaisyUI for a responsive and intuitive user interface
 
 ---
 
-## 🚀 Getting Started
+## Tech Stack
+
+| Technology    | Purpose                            |
+| ------------- | ---------------------------------- |
+| Node.js       | Backend runtime                    |
+| Express.js    | Web framework                      |
+| MongoDB       | NoSQL database                     |
+| Mongoose      | MongoDB ODM                        |
+| EJS           | Server-side templating             |
+| Tailwind CSS  | CSS utility framework              |
+| DaisyUI       | UI component library               |
+| Socket.IO     | Real-time communication            |
+| JWT + Cookies | Authentication                     |
+| Nodemailer    | Email service                      |
+| node-cron     | Scheduled tasks                    |
+
+---
+
+## Getting Started
+
+Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/nil0006/notification-app.git
@@ -59,9 +63,11 @@ cd notification-app
 npm install
 ```
 
-### 🔐 Setup Environment
+---
 
-Create a `.env` file in the root directory:
+### Environment Setup
+
+Create a `.env` file in the root directory with the following variables:
 
 ```env
 PORT=5000
@@ -73,61 +79,63 @@ EMAIL_PASS=your_email_app_password
 
 ---
 
-## 🔁 Project Structure
+## Project Structure
 
-```bash
+```
 notification-app/
 ├── controllers/         # Route logic
 ├── jobs/                # Cron jobs (e.g., send email)
-├── middleware/          # Auth middleware
+├── middleware/          # Authentication middleware
 ├── models/              # Mongoose schemas
-├── public/              # Static assets (CSS, JS)
-├── utility/             # Auth/email helper functions
+├── public/              # Static assets
+├── utility/             # Helper functions
 ├── views/               # EJS templates
-├── routes/              # Route files
+├── routes/              # Route definitions
 ├── .env                 # Environment variables
-├── app.js               # Main app entry
-├── package.json         # NPM metadata
+├── app.js               # Application entry point
+├── package.json         # Project metadata
 ```
 
 ---
 
-## 📅 Cron Job
+## Email Notification Workflow
 
-Emails are not sent immediately. Instead, high-priority notifications for offline users are:
+High-priority notifications follow this flow:
 
-1. Stored in a `pendingemails` collection
-2. Picked up by a cron job every minute
-3. Sent using **Nodemailer**, then marked as sent
-4. Automatically deleted after 1 hour using TTL
-
----
-
-## 🧪 Unit Test Cases for the Project
-
-📄 You can review the manual unit test cases in this file:  
-[Unit Test Cases - Excel File](https://docs.google.com/spreadsheets/d/1iKVQOHg_sXrotyV3-Arxw8yY5wVC3h_oMInKf0eS8W8/edit?usp=sharing)
-
-It includes:
-
-- Auth module tests
-- Notification module tests
-- Email simulation
-- Role and token protection
+1. Stored in a `pendingemails` collection if the recipient is offline
+2. A cron job checks for unsent emails every minute
+3. Emails are sent using **Nodemailer**
+4. Sent emails are removed from the collection automatically after 1 hour via MongoDB TTL
 
 ---
 
-## 🚩 Security Notes
+## Unit Testing
 
-* Cookies are set to expire in 2 hours
-* Routes are protected using middleware to enforce auth and role-based access
+Manual unit test cases are documented here:  
+[Unit Test Plan - Google Sheets](https://docs.google.com/spreadsheets/d/1iKVQOHg_sXrotyV3-Arxw8yY5wVC3h_oMInKf0eS8W8/edit?usp=sharing)
+
+Tests include:
+
+- Authentication module
+- Notification logic
+- Email queue simulation
+- Role-based route protection
 
 ---
 
-## 👋 Author
+## Security Notes
 
-Made by [Niladri Karmakar](https://github.com/nil0006)
+- JWT tokens expire after 2 hours
+- Protected routes enforce authentication and role-based access using middleware
 
 ---
 
-> “Thanks for the opportunity — I enjoyed building this from the ground up.”
+## Author
+
+Developed by [Niladri Karmakar](https://github.com/nil0006)
+
+- Email: [niladrikarmakar006@gmail.com](mailto:niladrikarmakar006@gmail.com)  
+- Portfolio: [https://nilportfolio.netlify.app](https://nilportfolio.netlify.app)  
+- LinkedIn: [https://www.linkedin.com/in/niladri-karmakar](https://www.linkedin.com/in/niladri-karmakar)
+
+> Thank you for the opportunity to work on this project. It’s been a great experience building it end-to-end.
