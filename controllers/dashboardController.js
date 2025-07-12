@@ -7,7 +7,7 @@ exports.getDashboard = async (req, res) => {
     const notifications = await Notification.find().sort({ createdAt: -1 });
 
     // Render dashboard view with user, notifications, and optional error
-    res.render('dashboard', {
+    res.status(200).render('dashboard', {
       user: req.user,
       notifications,
       error: req.query.error || null,
@@ -16,7 +16,7 @@ exports.getDashboard = async (req, res) => {
     console.error(' Dashboard load error:', err.message);
 
     // In case of error, render the dashboard with empty notifications and show error
-    res.render('dashboard', {
+    res.status(500).render('dashboard', {
       user: req.user,
       notifications: [],
       error: 'Something went wrong!',
@@ -26,5 +26,5 @@ exports.getDashboard = async (req, res) => {
 
 // ✉️ Render the "Send Notification" form page
 exports.getSendNotification = (req, res) => {
-  res.render('sendNotification', { user: req.user });
+  res.status(200).render('sendNotification', { user: req.user });
 };
