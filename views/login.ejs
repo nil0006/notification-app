@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dim">
-  <!-- Change to "dark" for dark mode -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,14 +7,17 @@
     <link href="/css/output.css" rel="stylesheet" />
   </head>
   <body class="min-h-screen flex items-center justify-center bg-base-200">
+    <!-- Login card -->
     <div class="card w-full max-w-sm shadow-2xl bg-base-100">
       <div class="card-body">
         <h2 class="text-2xl font-bold text-center">Welcome Back 👋</h2>
         <p class="text-sm text-center text-base-content/60 mb-4">
           Login to your dashboard
         </p>
+        <!-- Login form -->
 
         <form method="POST" action="/login" class="space-y-4">
+          <!-- Email input -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Email</span>
@@ -28,7 +30,7 @@
               required
             />
           </div>
-
+          <!-- Password input -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Password</span>
@@ -41,26 +43,12 @@
               required
             />
           </div>
-
+          <!-- Submit button -->
           <div class="form-control mt-6">
             <button class="btn btn-primary w-full">Login</button>
           </div>
-          <!-- Toast container -->
-          <div
-            id="toast-container"
-            class="toast toast-top toast-end fixed z-50 "
-          >
-            <% if (error) { %>
-            <div
-              class="alert alert-error text-black shadow-lg animate-slide-in"
-              id="error-toast"
-            >
-              <span><%= error %></span>
-            </div>
-            <% } %>
-          </div>
         </form>
-
+        <!-- Signup redirect -->
         <div class="divider">OR</div>
         <p class="text-sm text-center">
           Don’t have an account?
@@ -68,16 +56,27 @@
         </p>
       </div>
     </div>
+    <!-- Error toast message (if login fails) -->
+    <div id="toast-container" class="toast toast-top toast-end fixed z-50">
+      <% if (error) { %>
+      <div
+        class="alert alert-error text-black shadow-lg animate-slide-in"
+        id="error-toast"
+      >
+        <span><%= error %></span>
+      </div>
+      <% } %>
+    </div>
   </body>
+  <!-- Auto-hide toast message after 3 seconds -->
   <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const toast = document.getElementById('error-toast');
-    if (toast) {
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3000); // 3 seconds
-    }
-  });
-</script>
-
+    window.addEventListener("DOMContentLoaded", () => {
+      const toast = document.getElementById("error-toast");
+      if (toast) {
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 3000); // 3 seconds
+      }
+    });
+  </script>
 </html>

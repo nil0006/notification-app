@@ -7,66 +7,92 @@
     <link rel="stylesheet" href="/css/output.css" />
   </head>
   <body>
-    <!-- ✅ Navbar -->
+    <!-- Navbar with navigation links -->
     <div class="navbar bg-base-100 shadow px-4 sm:px-6 md:px-10">
       <div class="flex-1">
-        <a href="/" class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2">
+        <a
+          href="/"
+          class="text-xl sm:text-2xl font-bold text-primary flex items-center gap-2"
+        >
           📬 Notification App
         </a>
       </div>
       <div class="flex-none space-x-2">
-        <a href="/dashboard" class="btn btn-sm sm:btn-md btn-ghost text-sm sm:text-base">🏠 Home</a>
-        <a href="/dashboard/send" class="btn btn-sm sm:btn-md btn-ghost text-sm sm:text-base">📨 Send</a>
-        <a href="/logout" class="btn btn-sm sm:btn-md btn-error text-sm sm:text-base">Logout</a>
+        <a
+          href="/dashboard"
+          class="btn btn-sm sm:btn-md btn-ghost text-sm sm:text-base"
+          >🏠 Home</a
+        >
+        <a
+          href="/dashboard/send"
+          class="btn btn-sm sm:btn-md btn-ghost text-sm sm:text-base"
+          >📨 Send</a
+        >
+        <a
+          href="/logout"
+          class="btn btn-sm sm:btn-md btn-error text-sm sm:text-base"
+          >Logout</a
+        >
       </div>
     </div>
 
-    <!-- ✅ Main Content -->
+    <!-- Main content: Notification list -->
     <main class="max-w-3xl mx-auto py-8 px-4 sm:px-6 md:px-10">
-      <h2 class="text-2xl sm:text-3xl font-bold mb-6 flex items-center gap-2">🔔 Notifications</h2>
-
+      <h2 class="text-2xl sm:text-3xl font-bold mb-6 flex items-center gap-2">
+        🔔 Notifications
+      </h2>
+      <!-- Notification items rendered from server-side -->
       <ul id="notificationList" class="space-y-4">
         <% notifications.forEach(notification => { %>
-          <li class="bg-base-300 p-4 sm:p-6 rounded-xl shadow hover:shadow-md transition">
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
-              <!-- Text Content -->
-              <div class="flex-1">
-                <h3 class="text-base sm:text-lg font-semibold text-base-content mb-1 sm:mb-0">
-                  <%= notification.title %>
-                </h3>
-                <p class="text-sm sm:text-base text-base-content/70">
-                  <%= notification.message %>
-                </p>
-              </div>
-              <!-- Date + Priority Badge -->
-              <div class="flex flex-col items-start sm:items-end gap-1 sm:text-right">
-                <span class="text-xs sm:text-sm text-base-content/50 whitespace-nowrap">
-                  <%= new Date(notification.createdAt).toLocaleString() %>
-                </span>
-                <span class="badge badge-sm 
-                  <%= notification.priority === 'High' ? 'badge-error' : 
-                      notification.priority === 'Low' ? 'badge-success' : 
-                      'badge-warning' %>">
-                  <%= notification.priority %>
-                </span>
-              </div>
+        <li
+          class="bg-base-300 p-4 sm:p-6 rounded-xl shadow hover:shadow-md transition"
+        >
+          <div
+            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2"
+          >
+            <!-- Text Content -->
+            <div class="flex-1">
+              <h3
+                class="text-base sm:text-lg font-semibold text-base-content mb-1 sm:mb-0"
+              >
+                <%= notification.title %>
+              </h3>
+              <p class="text-sm sm:text-base text-base-content/70">
+                <%= notification.message %>
+              </p>
             </div>
-          </li>
+            <!-- Date + Priority Badge -->
+            <div
+              class="flex flex-col items-start sm:items-end gap-1 sm:text-right"
+            >
+              <span
+                class="text-xs sm:text-sm text-base-content/50 whitespace-nowrap"
+              >
+                <%= new Date(notification.createdAt).toLocaleString() %>
+              </span>
+              <span
+                class="badge badge-sm <%= notification.priority === 'High' ? 'badge-error' : notification.priority === 'Low' ? 'badge-success' : 'badge-warning' %>"
+              >
+                <%= notification.priority %>
+              </span>
+            </div>
+          </div>
+        </li>
         <% }) %>
       </ul>
     </main>
 
-    <!-- ✅ Toast container -->
+    <!-- Toast message container for error alerts -->
     <div id="toast-container" class="toast toast-top toast-end fixed z-50">
       <% if (error) { %>
-        <div class="alert alert-error text-black shadow-lg" id="error-toast">
-          <span><%= error %></span>
-        </div>
+      <div class="alert alert-error text-black shadow-lg" id="error-toast">
+        <span><%= error %></span>
+      </div>
       <% } %>
     </div>
   </body>
 
-  <!-- ✅ Error toast timeout -->
+  <!-- Auto-remove error toast after 3 seconds -->
   <script>
     window.addEventListener("DOMContentLoaded", () => {
       const toast = document.getElementById("error-toast");
@@ -76,29 +102,33 @@
     });
   </script>
 
-  <!-- ✅ Socket.IO + Real-Time Insertion -->
+  <!-- Real-time updates using Socket.IO -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    const notificationList = document.getElementById('notificationList');
+    const notificationList = document.getElementById("notificationList");
 
-    socket.on('newNotification', (notification) => {
-      console.log("📬 New Notification:", notification);
+    // When a new notification arrives via socket, render it at the top of the list
+    socket.on("newNotification", (notification) => {
+      const priorityClass =
+        notification.priority === "High"
+          ? "badge-error"
+          : notification.priority === "Low"
+          ? "badge-success"
+          : "badge-warning";
 
-      const priorityClass = 
-        notification.priority === 'High' ? 'badge-error' :
-        notification.priority === 'Low' ? 'badge-success' :
-        'badge-warning';
-
-      const item = document.createElement('li');
-      item.className = "bg-base-300 p-4 sm:p-6 rounded-xl shadow hover:shadow-md transition";
+      const item = document.createElement("li");
+      item.className =
+        "bg-base-300 p-4 sm:p-6 rounded-xl shadow hover:shadow-md transition";
       item.innerHTML = `
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-2">
           <div class="flex-1">
             <h3 class="text-base sm:text-lg font-semibold text-base-content mb-1 sm:mb-0">
               ${notification.title}
             </h3>
-            <p class="text-sm sm:text-base text-base-content/70">${notification.message}</p>
+            <p class="text-sm sm:text-base text-base-content/70">${
+              notification.message
+            }</p>
           </div>
           <div class="flex flex-col items-start sm:items-end gap-1 sm:text-right">
             <span class="text-xs sm:text-sm text-base-content/50 whitespace-nowrap">
@@ -113,6 +143,12 @@
 
       // Add new notification to the top of the list
       notificationList.prepend(item);
+    });
+    // Emit user online status to server
+    socket.on("connect", () => {
+      socket.emit("user-online", {
+        id: "<%= user.id %>", // Make sure user is passed in from the controller
+      });
     });
   </script>
 </html>

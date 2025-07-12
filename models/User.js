@@ -1,32 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
+// Schema for storing user information
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true, // Full name of the user
+    },
+
+    email: {
+      type: String,
+      required: true, // Must be provided during signup
+      unique: true, // No duplicate accounts with same email
+    },
+
+    password: {
+      type: String,
+      required: true, // Hashed password stored here
+    },
+
+    role: {
+      type: String,
+      enum: ["User", "Manager"], // Role-based access control
+      default: "User", // Default role
+    },
+
+    isOnline: {
+      type: Boolean,
+      default: false, // Used for real-time presence tracking
+    },
   },
-
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-
-  password: {
-    type: String,
-    required: true
-  },
-
-  role: {
-    type: String,
-    enum: ['User', 'Manager'],
-    default: 'User'
-  },
-
-  isOnline: {
-    type: Boolean,
-    default: false // We'll use this to simulate online presence
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt
   }
-}, { timestamps: true });
+);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
