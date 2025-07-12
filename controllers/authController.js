@@ -1,7 +1,22 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { createSession } = require("../utility/auth");
+const jwt = require('jsonwebtoken');
 
+exports.homeRedirect = (req, res) => {
+  const token = req.cookies.token;
+  console.log(token);
+
+  if (!token) return res.redirect("/login");
+
+  try {
+    jwt.verify(token, process.env.JWT_SECRET);
+    res.redirect("/dashboard");
+  } catch (err) {
+    res.clearCookie("token");
+    res.redirect("/login");
+  }
+};
 
 // Render the signup form
 exports.getSignup = (req, res) => {
